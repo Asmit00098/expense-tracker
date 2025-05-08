@@ -5,13 +5,13 @@ const mysql = require('mysql2/promise');
 
 // Create a connection pool for efficient query handling
 const pool = mysql.createPool({
-  host: 'localhost',      // MySQL server address
-  user: 'Asmit',           // Your MySQL username
-  password: '9336',           // Your MySQL password
-  database: 'expense_tracker', // The database name you created
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'Asmit',
+    password: process.env.DB_PASSWORD || '9336',
+    database: process.env.DB_NAME || 'expense_tracker',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
 module.exports = pool; 
