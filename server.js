@@ -18,6 +18,15 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
+// Log environment variables (excluding sensitive data)
+console.log('Environment check:', {
+    PORT: process.env.PORT,
+    DB_HOST: process.env.DB_HOST ? 'Set' : 'Not set',
+    DB_USER: process.env.DB_USER ? 'Set' : 'Not set',
+    DB_NAME: process.env.DB_NAME ? 'Set' : 'Not set',
+    JWT_SECRET: process.env.JWT_SECRET ? 'Set' : 'Not set'
+});
+
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 // Enable CORS for all origins (for development)
@@ -56,8 +65,12 @@ app.get('/', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Server error' });
+  console.error('Server error:', err);
+  console.error('Error stack:', err.stack);
+  res.status(500).json({ 
+    message: 'Server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
 });
 
 app.listen(PORT, () => {
