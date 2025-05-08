@@ -3,15 +3,10 @@
 
 const mysql = require('mysql2/promise');
 
-// Parse host and port from the connection string
-const hostPort = (process.env.DB_HOST || 'localhost').split(':');
-const host = hostPort[0];
-const port = hostPort[1] || 3306;
-
 // Log database configuration (excluding sensitive data)
 console.log('Database configuration:', {
-    host: host,
-    port: port,
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 3306,
     user: process.env.DB_USER || 'Asmit',
     database: process.env.DB_NAME || 'expense_tracker',
     connectionLimit: 10
@@ -19,14 +14,20 @@ console.log('Database configuration:', {
 
 // Create a connection pool for efficient query handling
 const pool = mysql.createPool({
-    host: host,
-    port: port,
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 3306,
     user: process.env.DB_USER || 'Asmit',
     password: process.env.DB_PASSWORD || '9336',
     database: process.env.DB_NAME || 'expense_tracker',
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+    connectTimeout: 10000, // 10 seconds
+    acquireTimeout: 10000, // 10 seconds
+    timeout: 10000, // 10 seconds
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 // Test the connection
