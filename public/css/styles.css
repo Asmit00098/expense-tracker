@@ -1,0 +1,150 @@
+/* styles.css */
+/* Custom styles and Tailwind overrides */
+
+/* Base typography */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Custom focus styles */
+.focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* Custom transitions */
+.transition-all {
+    @apply transition-all duration-200 ease-in-out;
+}
+
+/* Custom shadows */
+.shadow-soft {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+/* Form input styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="month"],
+select {
+    @apply block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+}
+
+/* Button styles */
+.btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+}
+
+.btn-primary {
+    @apply bg-blue-500 text-white hover:bg-blue-600;
+}
+
+.btn-secondary {
+    @apply bg-gray-200 text-gray-700 hover:bg-gray-300;
+}
+
+.btn-danger {
+    @apply bg-red-500 text-white hover:bg-red-600;
+}
+
+/* Card styles */
+.card {
+    @apply bg-white rounded-2xl shadow-lg p-6;
+}
+
+/* Table styles */
+.table-container {
+    @apply overflow-x-auto rounded-lg shadow;
+}
+
+table {
+    @apply min-w-full divide-y divide-gray-200 border-separate border-spacing-0;
+}
+
+th {
+    @apply px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+td {
+    @apply px-8 py-4 whitespace-nowrap text-sm text-gray-900;
+}
+
+tr {
+    @apply hover:bg-gray-50;
+}
+
+/* Column widths with minimum spacing */
+th:nth-child(1), td:nth-child(1) { /* Date */
+    @apply w-32;
+    padding-right: 2rem !important;
+}
+
+th:nth-child(2), td:nth-child(2) { /* Description */
+    @apply w-64;
+    padding-right: 2rem !important;
+}
+
+th:nth-child(3), td:nth-child(3) { /* Amount */
+    @apply w-32 text-right;
+    padding-right: 2rem !important;
+}
+
+th:nth-child(4), td:nth-child(4) { /* Category */
+    @apply w-40;
+    padding-right: 2rem !important;
+}
+
+th:nth-child(5), td:nth-child(5) { /* Payment */
+    @apply w-40;
+    padding-right: 2rem !important;
+}
+
+th:nth-child(6), td:nth-child(6) { /* Actions */
+    @apply w-24 text-center;
+}
+
+/* Alert styles */
+.alert {
+    @apply p-4 rounded-lg mb-4;
+}
+
+.alert-success {
+    @apply bg-green-100 text-green-700;
+}
+
+.alert-error {
+    @apply bg-red-100 text-red-700;
+}
+
+.alert-warning {
+    @apply bg-yellow-100 text-yellow-700;
+}
+
+/* Loading spinner */
+.spinner {
+    @apply animate-spin h-5 w-5 text-blue-600;
+} 
