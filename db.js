@@ -1,5 +1,6 @@
 // db.js
 // This file sets up the MySQL connection using mysql2 for the expense tracker backend.
+require('dotenv').config();
 
 const mysql = require('mysql2/promise');
 

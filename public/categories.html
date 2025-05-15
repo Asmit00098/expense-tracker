@@ -6,36 +6,83 @@
     <title>Expense Tracker - Categories</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .card {
+            @apply bg-white rounded-lg shadow-sm p-6 transition-all duration-200 hover:shadow-md;
+        }
+        .table-container {
+            @apply overflow-x-auto rounded-lg border border-gray-200;
+        }
+        table {
+            @apply min-w-full divide-y divide-gray-200;
+        }
+        th {
+            @apply px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+        }
+        td {
+            @apply px-6 py-4 whitespace-nowrap text-sm text-gray-500;
+        }
+        tr:nth-child(even) {
+            @apply bg-gray-50;
+        }
+        .btn {
+            @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700;
+        }
+        .btn-outline {
+            @apply border border-gray-300 text-gray-700 hover:bg-gray-50;
+        }
+        .btn-danger {
+            @apply bg-red-600 text-white hover:bg-red-700;
+        }
+        .input-field {
+            @apply mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm">
+    <nav class="bg-white shadow-sm sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <div class="flex">
+                <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-wallet text-blue-600 mr-2"></i>
                         <span class="text-xl font-bold text-gray-800">Expense Tracker</span>
                     </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="dashboard.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Dashboard
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-2">
+                        <a href="dashboard.html" class="text-gray-600 hover:bg-gray-100 rounded-md px-3 py-2 text-sm font-medium flex items-center">
+                            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
                         </a>
-                        <a href="categories.html" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Categories
+                        <a href="categories.html" class="bg-blue-50 text-blue-700 rounded-md px-3 py-2 text-sm font-medium flex items-center">
+                            <i class="fas fa-tags mr-2"></i> Categories
                         </a>
-                        <a href="expenses.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Expenses
+                        <a href="expenses.html" class="text-gray-600 hover:bg-gray-100 rounded-md px-3 py-2 text-sm font-medium flex items-center">
+                            <i class="fas fa-receipt mr-2"></i> Expenses
                         </a>
-                        <a href="budgets.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Budgets
+                        <a href="budgets.html" class="text-gray-600 hover:bg-gray-100 rounded-md px-3 py-2 text-sm font-medium flex items-center">
+                            <i class="fas fa-chart-pie mr-2"></i> Budgets
                         </a>
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <span id="userName" class="text-gray-700 mr-4"></span>
-                    <button id="logoutBtn" class="text-gray-500 hover:text-gray-700">Logout</button>
+                    <div class="relative">
+                        <button id="userMenuBtn" class="flex items-center text-gray-700 hover:text-gray-900">
+                            <span id="userName" class="mr-2"></span>
+                            <i class="fas fa-user-circle text-xl"></i>
+                        </button>
+                        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                            
+                            <button id="logoutBtn" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,77 +90,205 @@
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Page Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-tags text-blue-600 mr-3"></i> Categories & Payment Methods
+            </h1>
+            
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Categories Section -->
             <div>
+                <!-- Add Category Card -->
                 <div class="card mb-6">
-                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Add Category</h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-700">
+                            <i class="fas fa-plus-circle text-blue-500 mr-2"></i> Add New Category
+                        </h2>
+                        <span class="text-xs text-gray-500">Required fields *</span>
+                    </div>
                     <form id="categoryForm" class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-600">Category Name</label>
+                            <label class="block text-sm font-medium text-gray-600">
+                                Category Name <span class="text-red-500">*</span>
+                            </label>
                             <input type="text" id="categoryName" required
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                class="input-field"
+                                placeholder="e.g. Groceries, Entertainment">
                         </div>
-                        <button type="submit" class="btn btn-primary w-full">Add Category</button>
+                        <div class="flex space-x-3">
+                            <button type="submit" class="btn btn-primary flex-1">
+                                <i class="fas fa-save mr-2"></i> Save Category
+                            </button>
+                            <button type="reset" class="btn btn-outline">
+                                <i class="fas fa-undo mr-2"></i> Reset
+                            </button>
+                        </div>
                     </form>
                 </div>
 
+                <!-- Categories List Card -->
                 <div class="card">
-                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Your Categories</h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-700">
+                            <i class="fas fa-list-ul text-blue-500 mr-2"></i> Your Categories
+                        </h2>
+                        
+                    </div>
                     <div class="table-container">
-                        <table>
-                            <thead>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Actions</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody id="categoriesList"></tbody>
+                            <tbody id="categoriesList" class="bg-white divide-y divide-gray-200">
+                                <!-- Categories will be inserted here -->
+                            </tbody>
                         </table>
                     </div>
+                    
                 </div>
             </div>
 
             <!-- Payment Methods Section -->
             <div>
+                <!-- Add Payment Method Card -->
                 <div class="card mb-6">
-                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Add Payment Method</h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-700">
+                            <i class="fas fa-credit-card text-blue-500 mr-2"></i> Add Payment Method
+                        </h2>
+                        <span class="text-xs text-gray-500">Required fields *</span>
+                    </div>
                     <form id="paymentForm" class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-600">Method</label>
+                            <label class="block text-sm font-medium text-gray-600">
+                                Method <span class="text-red-500">*</span>
+                            </label>
                             <select id="paymentMethod" required
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                class="input-field">
+                                <option value="" disabled selected>Select a payment method</option>
                                 <option value="Cash">Cash</option>
-                                <option value="Card">Card</option>
+                                <option value="Credit Card">Credit Card</option>
+                                <option value="Debit Card">Debit Card</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
                                 <option value="UPI">UPI</option>
+                                <option value="Digital Wallet">Digital Wallet</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary w-full">Add Payment Method</button>
+                        <div id="customMethodContainer" class="hidden">
+                            <label class="block text-sm font-medium text-gray-600">
+                                Custom Method Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="customMethodName"
+                                class="input-field"
+                                placeholder="Enter custom payment method">
+                        </div>
+                        <div class="flex space-x-3">
+                            <button type="submit" class="btn btn-primary flex-1">
+                                <i class="fas fa-save mr-2"></i> Save Method
+                            </button>
+                            <button type="reset" class="btn btn-outline">
+                                <i class="fas fa-undo mr-2"></i> Reset
+                            </button>
+                        </div>
                     </form>
                 </div>
 
+                <!-- Payment Methods List Card -->
                 <div class="card">
-                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Your Payment Methods</h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-700">
+                            <i class="fas fa-money-bill-wave text-blue-500 mr-2"></i> Your Payment Methods
+                        </h2>
+                        
+                    </div>
                     <div class="table-container">
-                        <table>
-                            <thead>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th>Method</th>
-                                    <th>Actions</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Method
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody id="paymentMethodsList"></tbody>
+                            <tbody id="paymentMethodsList" class="bg-white divide-y divide-gray-200">
+                                <!-- Payment methods will be inserted here -->
+                            </tbody>
                         </table>
                     </div>
+                    
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-lg font-semibold text-gray-900" id="modalTitle">Confirm Action</h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="text-gray-600 mb-6" id="modalMessage">Are you sure you want to perform this action?</p>
+            <div class="flex justify-end space-x-3">
+                <button id="cancelModalBtn" class="btn btn-outline">Cancel</button>
+                <button id="confirmModalBtn" class="btn btn-danger">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Auth module -->
     <script type="module" src="js/auth.js"></script>
     <!-- Categories module -->
     <script type="module" src="js/categories.js"></script>
+
+    <script>
+        // User menu toggle
+        document.getElementById('userMenuBtn').addEventListener('click', function() {
+            document.getElementById('userMenu').classList.toggle('hidden');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const userMenu = document.getElementById('userMenu');
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            
+            if (!userMenu.contains(event.target) && !userMenuBtn.contains(event.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+
+        // Payment method selection handler
+        document.getElementById('paymentMethod').addEventListener('change', function() {
+            const customContainer = document.getElementById('customMethodContainer');
+            if (this.value === 'Other') {
+                customContainer.classList.remove('hidden');
+                document.getElementById('customMethodName').required = true;
+            } else {
+                customContainer.classList.add('hidden');
+                document.getElementById('customMethodName').required = false;
+            }
+        });
+
+        // Modal handling
+        const modal = document.getElementById('confirmationModal');
+        document.getElementById('closeModalBtn').addEventListener('click', () => modal.classList.add('hidden'));
+        document.getElementById('cancelModalBtn').addEventListener('click', () => modal.classList.add('hidden'));
+    </script>
 </body>
-</html> 
+</html>

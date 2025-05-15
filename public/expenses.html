@@ -6,36 +6,92 @@
     <title>Expense Tracker - Expenses</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .card {
+            @apply bg-white rounded-lg shadow-sm p-6 transition-all duration-200 hover:shadow-md;
+        }
+        .table-container {
+            @apply overflow-x-auto rounded-lg border border-gray-200;
+        }
+        table {
+            @apply min-w-full divide-y divide-gray-200;
+        }
+        th {
+            @apply px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+        }
+        td {
+            @apply px-6 py-4 whitespace-nowrap text-sm;
+        }
+        tr:nth-child(even) {
+            @apply bg-gray-50;
+        }
+        .btn {
+            @apply px-4 py-2 rounded-md font-medium transition-colors duration-200 flex items-center justify-center;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700;
+        }
+        .btn-outline {
+            @apply border border-gray-300 text-gray-700 hover:bg-gray-50;
+        }
+        .btn-danger {
+            @apply bg-red-600 text-white hover:bg-red-700;
+        }
+        .input-field {
+            @apply mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+        }
+        .amount-positive {
+            @apply text-green-600 font-medium;
+        }
+        .amount-negative {
+            @apply text-red-600 font-medium;
+        }
+        .badge {
+            @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm">
+    <nav class="bg-white shadow-sm sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <div class="flex">
+                <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-wallet text-blue-600 mr-2"></i>
                         <span class="text-xl font-bold text-gray-800">Expense Tracker</span>
                     </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="dashboard.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Dashboard
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-2">
+                        <a href="dashboard.html" class="text-gray-600 hover:bg-gray-100 rounded-md px-3 py-2 text-sm font-medium flex items-center">
+                            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
                         </a>
-                        <a href="categories.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Categories
+                        <a href="categories.html" class="text-gray-600 hover:bg-gray-100 rounded-md px-3 py-2 text-sm font-medium flex items-center">
+                            <i class="fas fa-tags mr-2"></i> Categories
                         </a>
-                        <a href="expenses.html" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Expenses
+                        <a href="expenses.html" class="bg-blue-50 text-blue-700 rounded-md px-3 py-2 text-sm font-medium flex items-center">
+                            <i class="fas fa-receipt mr-2"></i> Expenses
                         </a>
-                        <a href="budgets.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Budgets
+                        <a href="budgets.html" class="text-gray-600 hover:bg-gray-100 rounded-md px-3 py-2 text-sm font-medium flex items-center">
+                            <i class="fas fa-chart-pie mr-2"></i> Budgets
                         </a>
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <span id="userName" class="text-gray-700 mr-4"></span>
-                    <button id="logoutBtn" class="text-gray-500 hover:text-gray-700">Logout</button>
+                    <div class="relative">
+                        <button id="userMenuBtn" class="flex items-center text-gray-700 hover:text-gray-900">
+                            <span id="userName" class="mr-2"></span>
+                            <i class="fas fa-user-circle text-xl"></i>
+                        </button>
+                        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                            
+                            <button id="logoutBtn" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,40 +99,88 @@
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Page Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-receipt text-blue-600 mr-3"></i> Expense Management
+            </h1>
+            
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Add Expense Section -->
             <div>
                 <div class="card">
-                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Add Expense</h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-700">
+                            <i class="fas fa-plus-circle text-blue-500 mr-2"></i> Add New Expense
+                        </h2>
+                        <span class="text-xs text-gray-500">Required fields *</span>
+                    </div>
                     <form id="expenseForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-600">Amount</label>
-                            <input type="number" id="amount" step="0.01" required
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600">
+                                    Amount <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative mt-1 rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                    </div>
+                                    <input type="number" id="amount" step="0.01" required
+                                        class="input-field pl-7"
+                                        placeholder="0.00">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600">
+                                    Date <span class="text-red-500">*</span>
+                                </label>
+                                <input type="date" id="date" required
+                                    class="input-field">
+                            </div>
                         </div>
+                        
                         <div>
-                            <label class="block text-sm font-medium text-gray-600">Description</label>
+                            <label class="block text-sm font-medium text-gray-600">
+                                Description <span class="text-red-500">*</span>
+                            </label>
                             <input type="text" id="description" required
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                class="input-field"
+                                placeholder="What was this expense for?">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-600">Category</label>
-                            <select id="category" required
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            </select>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600">
+                                    Category <span class="text-red-500">*</span>
+                                </label>
+                                <select id="category" required
+                                    class="input-field">
+                                    <option value="" disabled selected>Select a category</option>
+                                    <!-- Categories will be populated here -->
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600">
+                                    Payment Method <span class="text-red-500">*</span>
+                                </label>
+                                <select id="paymentMethod" required
+                                    class="input-field">
+                                    <option value="" disabled selected>Select payment method</option>
+                                    <!-- Payment methods will be populated here -->
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-600">Payment Method</label>
-                            <select id="paymentMethod" required
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            </select>
+                        
+                        <div class="flex space-x-3">
+                            <button type="submit" class="btn btn-primary flex-1">
+                                <i class="fas fa-save mr-2"></i> Save Expense
+                            </button>
+                            <button type="reset" class="btn btn-outline">
+                                <i class="fas fa-undo mr-2"></i> Reset
+                            </button>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-600">Date</label>
-                            <input type="date" id="date" required
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        </div>
-                        <button type="submit" class="btn btn-primary w-full">Add Expense</button>
                     </form>
                 </div>
             </div>
@@ -84,35 +188,150 @@
             <!-- Expenses List Section -->
             <div>
                 <div class="card">
-                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Your Expenses</h2>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-600">Filter by Month</label>
-                        <input type="month" id="monthFilter"
-                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-700">
+                            <i class="fas fa-list-ul text-blue-500 mr-2"></i> Expense History
+                        </h2>
+                        
                     </div>
+                    
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">
+                        <div class="w-full sm:w-auto">
+                            <label class="block text-sm font-medium text-gray-600">Filter by Month</label>
+                            <input type="month" id="monthFilter"
+                                class="input-field">
+                        </div>
+                        
+                    </div>
+                    
                     <div class="table-container">
-                        <table>
-                            <thead>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Amount</th>
-                                    <th>Category</th>
-                                    <th>Payment</th>
-                                    <th>Actions</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Date
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Description
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Amount
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Category
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Payment
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody id="expensesList"></tbody>
+                            <tbody id="expensesList" class="bg-white divide-y divide-gray-200">
+                                <!-- Expenses will be inserted here -->
+                            </tbody>
                         </table>
                     </div>
+                    
+                   
+                    
+                    
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- Edit Expense Modal -->
+    <div id="editExpenseModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Edit Expense</h3>
+                <button id="closeEditModalBtn" class="text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="editExpenseForm" class="space-y-4">
+                <input type="hidden" id="editExpenseId">
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Amount</label>
+                        <div class="relative mt-1 rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">$</span>
+                            </div>
+                            <input type="number" id="editAmount" step="0.01" required
+                                class="input-field pl-7">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Date</label>
+                        <input type="date" id="editDate" required
+                            class="input-field">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600">Description</label>
+                    <input type="text" id="editDescription" required
+                        class="input-field">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Category</label>
+                        <select id="editCategory" required
+                            class="input-field">
+                            <!-- Categories will be populated here -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Payment Method</label>
+                        <select id="editPaymentMethod" required
+                            class="input-field">
+                            <!-- Payment methods will be populated here -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancelEditBtn" class="btn btn-outline">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Auth module -->
     <script type="module" src="js/auth.js"></script>
     <!-- Expenses module -->
     <script type="module" src="js/expenses.js"></script>
+
+    <script>
+        // User menu toggle
+        document.getElementById('userMenuBtn').addEventListener('click', function() {
+            document.getElementById('userMenu').classList.toggle('hidden');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const userMenu = document.getElementById('userMenu');
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            
+            if (!userMenu.contains(event.target) && !userMenuBtn.contains(event.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+
+        // Close edit modal
+        document.getElementById('closeEditModalBtn').addEventListener('click', function() {
+            document.getElementById('editExpenseModal').classList.add('hidden');
+        });
+
+        document.getElementById('cancelEditBtn').addEventListener('click', function() {
+            document.getElementById('editExpenseModal').classList.add('hidden');
+        });
+    </script>
 </body>
-</html> 
+</html>
