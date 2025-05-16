@@ -44,9 +44,10 @@ export function checkAuth() {
     }
 
     // Display user name if available
-    const userName = localStorage.getItem('userName');
-    if (userName) {
-        document.getElementById('userName').textContent = userName;
+    const userData = localStorage.getItem('user');
+    if (userData) {
+        const user = JSON.parse(userData);
+        document.getElementById('userName').textContent = user.name;
     }
 
     // Set up logout handler
@@ -116,7 +117,7 @@ export async function signup(name, email, password) {
         if (response.ok) {
             showMessage('Signup successful! Redirecting...', false);
             setToken(data.token);
-            localStorage.setItem('userName', data.user.name);
+            localStorage.setItem('user', JSON.stringify(data.user));
             setTimeout(() => {
                 window.location.href = 'dashboard.html';
             }, 1000);
@@ -132,7 +133,7 @@ export async function signup(name, email, password) {
 // Logout function
 export function logout() {
     clearToken();
-    localStorage.removeItem('userName');
+    localStorage.removeItem('user');
     window.location.href = 'index.html';
 }
 

@@ -30,7 +30,7 @@ module.exports = (JWT_SECRET) => {
       const [result] = await pool.query('INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)', [name, email, hash]);
       // Issue JWT
       const token = jwt.sign({ id: result.insertId, email }, JWT_SECRET, { expiresIn: '2h' });
-      res.status(201).json({ token, user: { name, email } });
+      res.status(201).json({ token, user: { id: result.insertId, name, email } });
     } catch (err) {
       console.error('Signup error:', err);
       res.status(500).json({ message: 'Server error' });
